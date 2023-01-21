@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% include 'head.html' %}
+</head>
+<body data-spy="scroll" data-target=".fixed-top">
+    
+    <!-- Preloader -->
+	<div class="spinner-wrapper">
+        <div class="spinner">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+        </div>
+    </div>
+    <!-- end of preloader -->
+    
+    <!-- Registration -->
+    <div id="register" class="form-1">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-6">
+                </div> <!-- end of col -->
+                <div class="col-lg-6">
+
+                    <!-- Registration Form -->
+                    <div class="form-container">
+                        <form data-toggle="validator" data-focus="false" action="" method="POST">
+                            {% csrf_token %}
+                            <div class="form-group">
+                                <input type="text" class="form-control-input" id="rname" name="username" required>
+                                <label class="label-control" for="rname">Username</label>
+                                <div class="help-block with-errors"></div>
+
+                            </div>
+                            <div class="form-group">
+                                <input type="password" class="form-control-input" id="remail" name="password" required>
+                                <label class="label-control" for="remail">Password</label>
+                                <div class="help-block with-errors"></div>
+
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" class="form-control-submit-button" value="Log In" name="default">
+                            </div>
+                            <div class="form-group">
+                                <input type="submit" class="form-control-submit-button bg-primary text-white" value="Log In With 'Kelase Dars'" name="kelase_dars">
+                            </div>
+                        </form>
+                    </div> <!-- end of form-container -->
+                    <!-- end of registration form -->
+                    
+                </div> <!-- end of col -->
+            </div> <!-- end of row -->
+        </div> <!-- end of container -->
+    </div> <!-- end of form-1 -->
+    <!-- end of registration -->
+{% include 'foot.html' %}
+</body>
+</html>
