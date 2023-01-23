@@ -7,5 +7,5 @@ urlpatterns = [
     path('', log_in),
     path('grades/', grades),
     path('logout/', log_out),
-    path('setGrade/', set_grade)
+    path('setGrade/', set_grade),
 ]

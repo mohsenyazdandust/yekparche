@@ -19,14 +19,14 @@ def get_user(request):
         except:
             user = None
             user_type = None
-    
+
     return [user, user_type]
 
 def log_in(request):
     user = get_user(request)
     if user[0]:
         return redirect('/courses/')
-    
+
     if request.method == 'POST':
         username = request.POST.get('username', '')
         password = request.POST.get('password', '')
@@ -42,7 +42,7 @@ def log_in(request):
             except:
                 return redirect('/')
 
-        return redirect('/courses/')        
+        return redirect('/courses/')
     else:
         return render(request, 'login.html')
 
@@ -52,7 +52,7 @@ def log_out(request):
 		del request.session['StuID']
 	except:
 		pass
-	
+
 	try:
 		del request.session['TrID']
 	except:
@@ -73,7 +73,7 @@ def courses(request):
         'user': user[0],
         'courses': courses,
     })
-    
+
 
 def course(request, pk, stu_id=0):
     user = get_user(request)
@@ -91,7 +91,7 @@ def course(request, pk, stu_id=0):
                 grade = Grade.objects.get(user=user[0], course=c)
             except:
                 pass
-        
+
         return render(request, 'detail-student.html', {
             'user': user[0],
             'course': c,
@@ -145,6 +145,7 @@ def grade(request, stu_id, course_id):
         teacher = Teacher.objects.filter(courses=c)[0]
         url = 'https://golestan25.pythonanywhere.com/setGrade/'
         data = {
+            'token': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9',
             'student_number': stu.username,
             'course_number': c.course_number,
             'teacher': teacher.name,
@@ -152,7 +153,7 @@ def grade(request, stu_id, course_id):
         }
 
         requests.post(url, data=data)
-        
+
         return redirect('/courses/{}/{}'.format(c.id, stu.id))
     else:
         return redirect('/')

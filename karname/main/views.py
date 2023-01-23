@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import requests
@@ -77,6 +77,9 @@ def grades(request):
     
 @csrf_exempt
 def set_grade(request):
+    auth_token = request.POST.get('token', '')
+    if auth_token != 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9':
+        return JsonResponse({'message': 'AUTH FAILED'})
     student_number = request.POST.get('student_number')
     course_number = request.POST.get('course_number')
     teacher = request.POST.get('teacher')
@@ -84,12 +87,22 @@ def set_grade(request):
 
     course = Course.objects.get(course_number=course_number)
     stu = Student.objects.get(student_number=student_number)
-    grade = Grade(
-        course=course,
-        teacher=teacher,
-        total=total
-    )
-    grade.save()
-    stu.grades.add(grade)
-    stu.save()
+    try:
+        grade = Grade.objects.get(course=course, teacher=teacher)
+        grades = stu.grades.all()
+        if grade in grades:
+            grade.total = total
+            grade.save()
+        else:
+            raise Exception()
+    except:    
+        grade = Grade(
+            course=course,
+            teacher=teacher,
+            total=total
+        )
+        grade.save()
+        stu.grades.add(grade)
+        stu.save()
     return JsonResponse({'message': 'DONE'})
+
